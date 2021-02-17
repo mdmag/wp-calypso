@@ -7,7 +7,6 @@ import sidebar from './sidebar/reducer';
 import { combineReducers } from 'calypso/state/utils';
 import cardExpansions from './card-expansions/reducer';
 import hasUnseenPosts from './seen-posts/reducer';
-import { DESERIALIZE, SERIALIZE } from 'calypso/state/action-types';
 
 /**
  * Keep the last reader stream path selected by the user, for the purpose of autoselecting it
@@ -20,10 +19,6 @@ import { DESERIALIZE, SERIALIZE } from 'calypso/state/action-types';
  */
 export const lastPath = ( state = null, action ) => {
 	switch ( action.type ) {
-		case SERIALIZE:
-		case DESERIALIZE:
-			return state;
-
 		case READER_VIEW_STREAM:
 			if ( action.path && action.path.startsWith( '/read' ) ) {
 				return action.path;
