@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 /**
  * Internal dependencies
  */
-import { Button } from '@automattic/components';
+import { Button, CompactCard } from '@automattic/components';
 import {
 	emailManagementManageTitanAccount,
 	emailManagementNewTitanAccount,
@@ -27,7 +27,11 @@ import titanContactsIcon from 'calypso/assets/images/email-providers/titan/servi
 import titanMailIcon from 'calypso/assets/images/email-providers/titan/services/mail.svg';
 import VerticalNav from 'calypso/components/vertical-nav';
 import VerticalNavItem from 'calypso/components/vertical-nav/item';
-import { getTitanProductName } from 'calypso/lib/titan/get-titan-product-name';
+import {
+	getConfiguredTitanMailboxCount,
+	getMaxTitanMailboxCount,
+	getTitanProductName,
+} from 'calypso/lib/titan';
 
 /**
  * Style
@@ -37,6 +41,13 @@ import './style.scss';
 class TitanManagementNav extends React.Component {
 	static propTypes = {
 		domain: PropTypes.object.isRequired,
+
+		// Props injected via connect()
+		currentRoute: PropTypes.string.isRequired,
+		selectedSiteSlug: PropTypes.string.isRequired,
+
+		// Props injected via localize()
+		translate: PropTypes.func.isRequired,
 	};
 
 	renderTitanManagementLink = () => {
@@ -87,6 +98,47 @@ class TitanManagementNav extends React.Component {
 		);
 	};
 
+	renderMailboxes = () => {
+		const { currentRoute, domain, selectedSiteSlug, translate } = this.props;
+
+		const numberOfInactiveMailboxes =
+			getMaxTitanMailboxCount( domain ) - getConfiguredTitanMailboxCount( domain );
+
+		if ( numberOfInactiveMailboxes === 0 ) {
+			return;
+		}
+
+		return (
+			<CompactCard className="titan-management-nav__mailboxes-card">
+				<span>
+					{ translate(
+						'%(numberOfMailboxes)d inactive mailbox',
+						'%(numberOfMailboxes)d inactive mailboxes',
+						{
+							count: numberOfInactiveMailboxes,
+							args: {
+								numberOfMailboxes: numberOfInactiveMailboxes,
+							},
+							comment:
+								'This refers to the number of mailboxes purchased that have not been set up yet',
+						}
+					) }
+				</span>
+
+				<Button
+					compact
+					href={ emailManagementTitanControlPanelRedirect(
+						selectedSiteSlug,
+						domain.name,
+						currentRoute
+					) }
+				>
+					{ translate( 'Finish Setup' ) }
+				</Button>
+			</CompactCard>
+		);
+	};
+
 	render() {
 		const { currentRoute, domain, selectedSiteSlug, translate } = this.props;
 
@@ -100,6 +152,7 @@ class TitanManagementNav extends React.Component {
 
 				<span className="titan-management-nav__foldable-card-header-text">
 					<strong>{ getTitanProductName() }</strong>
+
 					<em>{ domain.name }</em>
 				</span>
 			</>
@@ -129,7 +182,7 @@ class TitanManagementNav extends React.Component {
 								<img src={ titanMailIcon } alt={ translate( 'Titan Mail icon' ) } />
 								<strong>
 									{ translate( 'Mail', {
-										comments: 'This refers to the Email application (i.e. the webmail) of Titan',
+										comment: 'This refers to the Email application (i.e. the webmail) of Titan',
 									} ) }
 								</strong>
 							</a>
@@ -139,7 +192,7 @@ class TitanManagementNav extends React.Component {
 								<img src={ titanCalendarIcon } alt={ translate( 'Titan Calendar icon' ) } />
 								<strong>
 									{ translate( 'Calendar', {
-										comments: 'This refers to the Calendar application of Titan',
+										comment: 'This refers to the Calendar application of Titan',
 									} ) }
 								</strong>
 							</a>
@@ -149,7 +202,7 @@ class TitanManagementNav extends React.Component {
 								<img src={ titanContactsIcon } alt={ translate( 'Titan Contacts icon' ) } />
 								<strong>
 									{ translate( 'Contacts', {
-										comments: 'This refers to the Contacts application of Titan',
+										comment: 'This refers to the Contacts application of Titan',
 									} ) }
 								</strong>
 							</a>
@@ -158,6 +211,7 @@ class TitanManagementNav extends React.Component {
 				</FoldableCard>
 
 				<VerticalNav>
+					{ this.renderMailboxes() }
 					{ this.renderTitanManagementLink() }
 					{ this.renderPurchaseManagementLink() }
 				</VerticalNav>
