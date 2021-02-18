@@ -51,6 +51,7 @@ import { getSignupUrl } from 'calypso/lib/login';
 import { isRegularAccount } from 'calypso/state/login/utils';
 import { localizeUrl } from 'calypso/lib/i18n-utils';
 import { preventWidows } from 'calypso/lib/formatting';
+import { addQueryArgs } from 'calypso/lib/url';
 import { recordTracksEventWithClientId as recordTracksEvent } from 'calypso/state/analytics/actions';
 import { sendEmailLogin } from 'calypso/state/auth/actions';
 
@@ -253,11 +254,6 @@ export class LoginForm extends Component {
 
 		const isEmailAddress = includes( this.state.usernameOrEmail, '@' );
 		if ( isEmailAddress ) {
-			console.log(
-				`%c : Sending magic link to: ${ this.state.usernameOrEmail }`,
-				'background: #C93570; color: white; padding: 10px 0;'
-			);
-
 			// With Magic Links, create the user a WPCOM account linked to the entered email address
 			this.props.sendEmailLogin( this.state.usernameOrEmail, {
 				redirectTo: this.props.redirectTo,
@@ -268,9 +264,12 @@ export class LoginForm extends Component {
 
 		// Redirect user to the Magic Link form page
 		page(
-			`/log-in/jetpack/link?${ new globalThis.URLSearchParams( {
-				email_address: this.state.usernameOrEmail,
-			} ).toString() }`
+			addQueryArgs(
+				{
+					email_address: this.state.usernameOrEmail,
+				},
+				'/log-in/jetpack/link'
+			)
 		);
 	}
 
