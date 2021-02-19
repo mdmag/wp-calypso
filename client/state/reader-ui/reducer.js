@@ -4,7 +4,7 @@
 import { withStorageKey } from '@automattic/state-utils';
 import { READER_VIEW_STREAM } from 'calypso/state/reader/action-types';
 import sidebar from './sidebar/reducer';
-import { combineReducers } from 'calypso/state/utils';
+import { combineReducers, withPersistence } from 'calypso/state/utils';
 import cardExpansions from './card-expansions/reducer';
 import hasUnseenPosts from './seen-posts/reducer';
 
@@ -17,7 +17,7 @@ import hasUnseenPosts from './seen-posts/reducer';
  *
  * @returns {null|string} last path selected
  */
-export const lastPath = ( state = null, action ) => {
+export const lastPath = withPersistence( ( state = null, action ) => {
 	switch ( action.type ) {
 		case READER_VIEW_STREAM:
 			if ( action.path && action.path.startsWith( '/read' ) ) {
@@ -26,8 +26,7 @@ export const lastPath = ( state = null, action ) => {
 			break;
 	}
 	return state;
-};
-lastPath.hasCustomPersistence = true;
+} );
 
 /*
  * Holds the last viewed stream for the purposes of keyboard navigation
