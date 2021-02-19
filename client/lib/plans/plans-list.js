@@ -120,6 +120,7 @@ const getPlanPersonalDetails = () => ( {
 	getPlanCompareFeatures: () => [
 		// pay attention to ordering, shared features should align on /plan page
 		constants.FEATURE_CUSTOM_DOMAIN,
+		constants.FEATURE_SITE_HOSTING,
 		constants.FEATURE_JETPACK_ESSENTIAL,
 		constants.FEATURE_EMAIL_SUPPORT,
 		constants.FEATURE_FREE_THEMES,
@@ -181,6 +182,7 @@ const getPlanEcommerceDetails = () => ( {
 		compact( [
 			// pay attention to ordering, shared features should align on /plan page
 			constants.FEATURE_CUSTOM_DOMAIN,
+			constants.FEATURE_SITE_HOSTING,
 			constants.FEATURE_JETPACK_ADVANCED,
 			constants.FEATURE_EMAIL_LIVE_CHAT_SUPPORT_ALL_DAYS,
 			constants.FEATURE_UNLIMITED_PREMIUM_THEMES,
@@ -265,6 +267,7 @@ const getPlanPremiumDetails = () => ( {
 		compact( [
 			// pay attention to ordering, shared features should align on /plan page
 			constants.FEATURE_CUSTOM_DOMAIN,
+			constants.FEATURE_SITE_HOSTING,
 			constants.FEATURE_JETPACK_ESSENTIAL,
 			constants.FEATURE_EMAIL_LIVE_CHAT_SUPPORT_BUSINESS_DAYS,
 			constants.FEATURE_UNLIMITED_PREMIUM_THEMES,
@@ -335,6 +338,7 @@ const getPlanBusinessDetails = () => ( {
 		compact( [
 			// pay attention to ordering, shared features should align on /plan page
 			constants.FEATURE_CUSTOM_DOMAIN,
+			constants.FEATURE_SITE_HOSTING,
 			constants.FEATURE_JETPACK_ADVANCED,
 			constants.FEATURE_EMAIL_LIVE_CHAT_SUPPORT_ALL_DAYS,
 			constants.FEATURE_UNLIMITED_PREMIUM_THEMES,

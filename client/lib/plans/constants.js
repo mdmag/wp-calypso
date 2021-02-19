@@ -207,6 +207,7 @@ export const FEATURE_FREE_THEMES_SIGNUP = 'free-themes-signup';
 export const FEATURE_BACKUP_STORAGE_SPACE_UNLIMITED_SIGNUP = 'unlimited-backup';
 export const FEATURE_MEMBERSHIPS = 'memberships';
 export const FEATURE_PREMIUM_CONTENT_BLOCK = 'premium-content-block';
+export const FEATURE_SITE_HOSTING = 'site-hosting';
 
 // jetpack features category
 export const FEATURE_CATEGORY_SECURITY = Symbol();
