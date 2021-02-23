@@ -31,8 +31,14 @@ export const lastPath = withPersistence( ( state = null, action ) => {
 /*
  * Holds the last viewed stream for the purposes of keyboard navigation
  */
-export const currentStream = ( state = null, action ) =>
-	action && action.type === READER_VIEW_STREAM ? action.streamKey : state;
+export const currentStream = ( state = null, action ) => {
+	switch ( action.type ) {
+		case READER_VIEW_STREAM:
+			return action.streamKey;
+		default:
+			return state;
+	}
+};
 
 const combinedReducer = combineReducers( {
 	sidebar,
