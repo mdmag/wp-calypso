@@ -75,7 +75,6 @@ jest.mock( 'calypso/state/redux-store', () => ( {
 jest.mock( 'calypso/state/reducer', () => jest.fn() );
 
 jest.mock( 'calypso/state/action-types', () => ( {
-	DESERIALIZE: 'DESERIALIZE',
 	LOCALE_SET: 'LOCALE_SET',
 } ) );
 

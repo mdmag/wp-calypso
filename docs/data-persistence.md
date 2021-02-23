@@ -86,7 +86,7 @@ reducer( reduxStore.getState(), { type: 'SERIALIZE' } );
 and
 
 ```javascript
-reducer( browserState, { type: 'DESERIALIZE' } );
+deserialize( reducer, browserState );
 ```
 
 Because browser storage is only capable of storing simple JavaScript objects, the purpose of the `SERIALIZE` action
