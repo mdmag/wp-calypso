@@ -43,7 +43,7 @@
 		"react-dom": "^16.8"
 	},
 	"devDependencies": {
-		"@storybook/addon-actions": "^6.1.10",
+		"@storybook/addon-actions": "^6.1.20",
 		"enzyme": "^3.11.0"
 	},
 	"scripts": {
