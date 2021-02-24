@@ -101,10 +101,10 @@ class TitanManagementNav extends React.Component {
 	renderMailboxes = () => {
 		const { currentRoute, domain, selectedSiteSlug, translate } = this.props;
 
-		const numberOfInactiveMailboxes =
+		const numberOfUnusedMailboxes =
 			getMaxTitanMailboxCount( domain ) - getConfiguredTitanMailboxCount( domain );
 
-		if ( numberOfInactiveMailboxes === 0 ) {
+		if ( numberOfUnusedMailboxes <= 0 ) {
 			return;
 		}
 
@@ -112,12 +112,12 @@ class TitanManagementNav extends React.Component {
 			<CompactCard className="titan-management-nav__mailboxes-card">
 				<span>
 					{ translate(
-						'%(numberOfMailboxes)d inactive mailbox',
-						'%(numberOfMailboxes)d inactive mailboxes',
+						'%(numberOfMailboxes)d unused mailbox',
+						'%(numberOfMailboxes)d unused mailboxes',
 						{
-							count: numberOfInactiveMailboxes,
+							count: numberOfUnusedMailboxes,
 							args: {
-								numberOfMailboxes: numberOfInactiveMailboxes,
+								numberOfMailboxes: numberOfUnusedMailboxes,
 							},
 							comment:
 								'This refers to the number of mailboxes purchased that have not been set up yet',
