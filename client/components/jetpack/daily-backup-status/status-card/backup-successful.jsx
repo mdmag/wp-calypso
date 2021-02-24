@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { useTranslate } from 'i18n-calypso';
-import { get, isArray } from 'lodash';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -30,10 +29,9 @@ import cloudSuccessIcon from './icons/cloud-success.svg';
 const BackupSuccessful = ( { backup, deltas, selectedDate } ) => {
 	const translate = useTranslate();
 	const siteId = useSelector( getSelectedSiteId );
-	const hasRealtimeBackups = useSelector( ( state ) => {
-		const capabilities = getRewindCapabilities( state, siteId );
-		return isArray( capabilities ) && capabilities.includes( 'backup-realtime' );
-	} );
+	const hasRealtimeBackups = useSelector(
+		( state ) => getRewindCapabilities( state, siteId )?.includes?.( 'backup-realtime' ) ?? false
+	);
 
 	const moment = useLocalizedMoment();
 	const timezone = useSelector( ( state ) => getSiteTimezoneValue( state, siteId ) );
@@ -49,7 +47,7 @@ const BackupSuccessful = ( { backup, deltas, selectedDate } ) => {
 	} );
 	const isToday = selectedDate.isSame( today, 'day' );
 
-	const meta = get( backup, 'activityDescription[2].children[0]', '' );
+	const meta = backup?.activityDescription?.[ 2 ]?.children?.[ 0 ] ?? '';
 
 	// We should only showing the summarized ActivityCard for Real-time sites when the latest backup is not a full backup
 	const showBackupDetails =
