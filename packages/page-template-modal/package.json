@@ -46,7 +46,7 @@
 		"@automattic/calypso-build": "^7.0.0"
 	},
 	"peerDependencies": {
-		"react": "^16.8"
+		"react": "^17.0"
 	},
 	"scripts": {
 		"clean": "npx rimraf dist",
