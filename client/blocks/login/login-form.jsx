@@ -115,7 +115,8 @@ export class LoginForm extends Component {
 		// User entered an email address or username that doesn't have a corresponding WPCOM account
 		// and sign-up with magic links is enabled.
 		if (
-			startsWith( currentRoute, '/log-in/jetpack' ) &&
+			currentRoute &&
+			currentRoute.includes( '/log-in/jetpack' ) &&
 			config.isEnabled( 'jetpack/magic-link-signup' ) &&
 			requestError.code === 'unknown_user'
 		) {
