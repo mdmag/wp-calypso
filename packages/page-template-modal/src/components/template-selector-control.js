@@ -1,9 +1,4 @@
 /**
- * External dependencies
- */
-import { isEmpty, isArray, noop, map } from 'lodash';
-
-/**
  * WordPress dependencies
  */
 import { BaseControl } from '@wordpress/components';
@@ -21,10 +16,10 @@ export const TemplateSelectorControl = ( {
 	templates = [],
 	theme = 'maywood',
 	locale = 'en',
-	onTemplateSelect = noop,
+	onTemplateSelect = () => {},
 	siteInformation = {},
 } ) => {
-	if ( isEmpty( templates ) || ! isArray( templates ) ) {
+	if ( ! Array.isArray( templates ) || ! templates.length ) {
 		return null;
 	}
 
@@ -35,7 +30,7 @@ export const TemplateSelectorControl = ( {
 				data-testid="template-selector-control-options"
 				aria-label={ legendLabel }
 			>
-				{ map( templates, ( { ID, name, title, description } ) => (
+				{ templates.map( ( { ID, name, title, description } ) => (
 					<li
 						key={ `${ ID }-${ name }-${ legendLabel }` }
 						className="template-selector-control__template"
