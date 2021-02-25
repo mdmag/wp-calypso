@@ -355,6 +355,19 @@
 			"categories": [ "featured" ],
 			"is_premium": false,
 			"features": []
+		},
+		{
+			"title": "Hannah",
+			"slug": "hannah",
+			"template": "hannah",
+			"theme": "spearhead",
+			"fonts": {
+				"headings": "Raleway",
+				"base": "Cabin"
+			},
+			"categories": [ "featured" ],
+			"is_premium": false,
+			"features": [ "anchorfm" ]
 		}
 	]
 }
