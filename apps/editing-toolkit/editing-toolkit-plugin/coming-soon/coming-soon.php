@@ -139,7 +139,7 @@ add_action( 'wpmu_new_blog', __NAMESPACE__ . '\add_option_to_new_site', 10, 6 );
  * the redirect.
  */
 function coming_soon_page() {
-	if ( ! should_show_coming_soon_page() ) {
+	if (!should_show_coming_soon_page() ) {
 		return;
 	}
 
