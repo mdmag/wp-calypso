@@ -1366,6 +1366,7 @@ object WPComPlugins_EditorToolKit : BuildType({
 
 				cd apps/editing-toolkit
 				yarn test:js --reporters=default --reporters=jest-junit --maxWorkers=${'$'}JEST_MAX_WORKERS
+				yarn lint:php
 			""".trimIndent()
 			dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
 			dockerPull = true
