@@ -48,6 +48,10 @@ import QueryReaderTeams from 'calypso/components/data/query-reader-teams';
 import { getReaderTeams } from 'calypso/state/teams/selectors';
 import { isAutomatticTeamMember } from 'calypso/reader/lib/teams';
 import { isWpMobileApp } from 'calypso/lib/mobile-app';
+import {
+	isNewNavUnificationUser,
+	isNavUnificationEnabledForUser,
+} from 'calypso/my-sites/sidebar-unified/utils';
 
 /**
  * Style dependencies
@@ -93,7 +97,7 @@ class Layout extends Component {
 	}
 
 	componentWillUnmount() {
-		if ( config.isEnabled( 'nav-unification' ) ) {
+		if ( this.props.isNavUnificationFlagEnabled ) {
 			window.removeEventListener( 'scroll', scrollCallback );
 			window.removeEventListener( 'resize', scrollCallback );
 		}
@@ -101,14 +105,12 @@ class Layout extends Component {
 
 	componentDidUpdate( prevProps ) {
 		// This code should be removed when the nav-unification project has been rolled out to 100% of the customers.
-		if ( config.isEnabled( 'nav-unification' ) ) {
+		if ( this.props.isNavUnificationFlagEnabled ) {
 			window.addEventListener( 'scroll', scrollCallback );
 			window.addEventListener( 'resize', scrollCallback );
 		}
-		if ( prevProps.teams !== this.props.teams ) {
-			// This is temporary helper function until we have rolled out to 100% of customers.
-			this.isNavUnificationEnabled();
-		}
+
+		this.isNavUnificationEnabled();
 		if ( ! config.isEnabled( 'me/account/color-scheme-picker' ) ) {
 			return;
 		}
@@ -164,23 +166,30 @@ class Layout extends Component {
 
 	// This is temporary helper function until we have rolled out to 100% of customers.
 	isNavUnificationEnabled() {
-		if ( ! this.props.teams.length ) {
-			return;
-		}
-
 		// Having the feature enabled by default in all environments, will let anyone use ?disable-nav-unification to temporary disable it.
 		// We still have the feature disabled in production as safety mechanism for all customers.
 		if ( new URL( document.location ).searchParams.has( 'disable-nav-unification' ) ) {
 			return;
 		}
 
-		// Leave the feature enabled for all a12s.
+		// Enable nav-unification for all users that registered 24h after the LAUNCH_DATE.
+		// Enable nav-unification for all users in the CURRENT_ROLLOUT_SEGMENT.
+		if ( this.props.isNewNavUnificationUser || this.props.isNavUnificationEnabledForUser ) {
+			return config.enable( 'nav-unification' );
+		}
+
+		// If the teams object is not yet popullated or is finally empty, there is no need for an a11n check.
+		if ( ! this.props.teams.length ) {
+			return config.disable( 'nav-unification' );
+		}
+
+		// Enable nav-unification for all a12s.
 		if ( isAutomatticTeamMember( this.props.teams ) ) {
 			// Force enable even in Production.
 			return config.enable( 'nav-unification' );
 		}
 
-		// Disable the feature for all customers and non a12s accounts.
+		// Disable the feature for the rest.
 		return config.disable( 'nav-unification' );
 	}
 
@@ -202,7 +211,7 @@ class Layout extends Component {
 				config.isEnabled( 'woocommerce/onboarding-oauth' ) &&
 				isWooOAuth2Client( this.props.oauth2Client ) &&
 				this.props.wccomFrom,
-			'is-nav-unification': config.isEnabled( 'nav-unification' ),
+			'is-nav-unification': this.props.isNavUnificationFlagEnabled,
 		} );
 
 		const optionalBodyProps = () => {
@@ -369,6 +378,9 @@ export default compose(
 			isNewLaunchFlow,
 			isCheckoutFromGutenboarding,
 			teams: getReaderTeams( state ),
+			isNewNavUnificationUser: isNewNavUnificationUser( state ),
+			isNavUnificationEnabledForUser: isNavUnificationEnabledForUser( state ),
+			isNavUnificationFlagEnabled: config.isEnabled( 'nav-unification' ),
 		};
 	} )
 )( Layout );
